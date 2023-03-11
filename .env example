@@ -1,0 +1,7 @@
+DATABASE_URL="mongodb+srv://giantdevs326:tHCCQl5to6YHupd0@cluster0.n38wryc.mongodb.net/doctors-portals?retryWrites=true&w=majority"
+SECRET_TOKEN = "adjajd34333ddfdhh!@9494944fhh"
+
+# passwor tHCCQl5to6YHupd0
+# username giantdevs326
+
+# mongodb+srv://<username>:<password>@cluster0.n38wryc.mongodb.net/<database-name>?retryWrites=true&w=majority
