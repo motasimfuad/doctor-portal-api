@@ -4,37 +4,36 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
-​
+
 //middle ware
-​
+
 app.use(cors());
 app.use(express.json());
-​
+
 //database info
 //name: conceptual2
 //pass: HiYzi4UJ1qHP7sHn
-​
 //collection name
 //name: phoneData
 // data name: phone
-​
+
 //data base connection
-​
+
 const uri = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASS}@cluster0.nvnfe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-​
+
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-​
+
 //for order
-​
+
 async function orders() {
   try {
     await client.connect();
     const orderCollection = client.db("phoneData").collection("orders");
-​
+
     //post
     app.post("/order", async (req, res) => {
       const orders = req.body;
@@ -45,25 +44,25 @@ async function orders() {
     // await client.close();
   }
 }
-​
+
 orders().catch(console.dir);
-​
+
 async function run() {
   try {
     await client.connect();
     const phoneCollection = client.db("phoneData").collection("phone");
-​
+
     //add order
-​
+
   /*   app.post("/order", async (req, res) => {
       const orders = req.body;
       console.log(orders);
       const result = await phoneCollection.insertOne(orders);
       res.send(result);
     }); */
-​
+
     //post api
-​
+
     app.post("/books", async (req, res) => {
       const book = req.body;
       if (!book?.name || !book?.img || !book?.Price) {
@@ -78,7 +77,7 @@ async function run() {
         message: `successfully added ${book.name}`,
       });
     });
-​
+
     //get api
     app.get("/books", async (req, res) => {
       const page = Number(req.query.page);
@@ -92,7 +91,7 @@ async function run() {
         .toArray();
       res.send({ success: true, data: result });
     });
-​
+
     //get count
     app.get("/productCount", async (req, res) => {
       const query = {};
@@ -100,27 +99,27 @@ async function run() {
       const count = await curser.count();
       res.send({ count });
     });
-​
+
     //delte
-​
+
     app.delete("/books/:id", async (req, res) => {
       const id = req.params.id;
       const querry = { _id: ObjectId(id) };
       const result = await phoneCollection.deleteOne(querry);
       res.send(result);
     });
-​
+
     //update
-​
+
     app.get("/books/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await phoneCollection.findOne(query);
       res.send(result);
     });
-​
+
     //put
-​
+
     app.put("/books/:id", async (req, res) => {
       const id = req.params.id;
       const updateUser = req.body;
@@ -143,20 +142,20 @@ async function run() {
       );
       res.send(result);
     });
-​
+
     //update
   } finally {
     // await client.close();
   }
 }
 run().catch(console.dir);
-​
+
 //cheek endpoint
-​
+
 app.get("/", (req, res) => {
   res.send({ message: "server is running" });
 });
-​
+
 app.listen(port, () => {
   console.log("server running on port", port);
 });
